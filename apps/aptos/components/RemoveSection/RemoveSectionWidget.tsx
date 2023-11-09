@@ -19,8 +19,8 @@ interface RemoveSectionWidgetProps {
   token0: Token
   token1: Token
   balance: number
-  token0MinMinimum: number
-  token1MinMinimum: number
+  token0MinMinimum: string
+  token1MinMinimum: string
 }
 
 export const RemoveSectionWidget: FC<RemoveSectionWidgetProps> = ({

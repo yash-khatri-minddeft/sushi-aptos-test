@@ -71,14 +71,15 @@ export const RemoveSectionLegacy = ({
         ? slippagePercent === 0
           ? Math.floor(currencyAToRemove)
           : Math.floor(currencyAToRemove - currencyAToRemove * slippagePercent)
-        : undefined,
+        : 0,
       currencyBToRemove
         ? slippagePercent === 0
           ? Math.floor(currencyBToRemove)
           : Math.floor(currencyBToRemove - currencyBToRemove * slippagePercent)
-        : undefined,
+        : 0,
     ]
   }, [slippagePercent, currencyAToRemove, currencyBToRemove])
+  console.log(currencyAToRemove)
 
   const removeLiquidityHandler = async () => {
     const provider = new Provider(providerNetwork)
@@ -117,8 +118,8 @@ export const RemoveSectionLegacy = ({
       token0={token0}
       token1={token1}
       balance={balance}
-      token0MinMinimum={Number(formatNumber(minAmount0 as number, token0.decimals))}
-      token1MinMinimum={Number(formatNumber(minAmount1 as number, token1.decimals))}
+      token0MinMinimum={formatNumber(minAmount0 as number, token0.decimals)}
+      token1MinMinimum={formatNumber(minAmount1 as number, token1.decimals)}
     >
       <>
         {connected ? (
