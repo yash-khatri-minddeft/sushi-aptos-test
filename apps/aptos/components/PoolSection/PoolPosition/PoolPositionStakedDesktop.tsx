@@ -1,40 +1,28 @@
 import { formatUSD } from '@sushiswap/format'
 import { Typography } from '@sushiswap/ui'
 import { Icon } from 'components/Icon'
-import { FC, useMemo } from 'react'
+import { FC } from 'react'
 import { Pool } from 'utils/usePools'
-import UseStablePrice from 'utils/useStablePrice'
 import { useTokensFromPools } from 'utils/useTokensFromPool'
-import { useTotalSupply } from 'utils/useTotalSupply'
-import { useUnderlyingTokenBalanceFromPool } from 'utils/useUnderlyingTokenBalanceFromPool'
 
 interface PoolPositionStakedDesktopProps {
   row: Pool
   isLoading: boolean
-  stakeAmount: number
+  underlying0: string | undefined
+  underlying1: string | undefined
+  value0: number
+  value1: number
 }
 
-export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ row, isLoading, stakeAmount }) => {
+export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({
+  row,
+  isLoading,
+  underlying0,
+  underlying1,
+  value0,
+  value1,
+}) => {
   const { token0, token1 } = useTokensFromPools(row)
-  const token0PriceStack = UseStablePrice(token0)
-  const token1PriceStack = UseStablePrice(token1)
-  const tokenAddress = row?.id
-  const { data: coinInfo } = useTotalSupply(tokenAddress)
-
-  const [reserve0, reserve1] = useMemo(() => {
-    return [row?.data?.balance_x?.value, row?.data?.balance_y?.value]
-  }, [row])
-
-  const totalSupply = coinInfo?.data?.supply?.vec?.[0]?.integer?.vec?.[0]?.value
-  const [underlying0, underlying1] = useUnderlyingTokenBalanceFromPool({
-    balance: stakeAmount,
-    reserve0: Number(reserve0),
-    reserve1: Number(reserve1),
-    totalSupply: Number(totalSupply),
-    decimals: coinInfo?.data?.decimals,
-  })
-  const token0PriceInUsd = token0PriceStack ? token0PriceStack * Number(underlying0) : 0
-  const token1PriceInUsd = token1PriceStack ? token1PriceStack * Number(underlying1) : 0
 
   if (isLoading) {
     return (
@@ -62,7 +50,7 @@ export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ 
             Staked Position
           </Typography>
           <Typography variant="xs" weight={500} className="dark:text-slate-100 text-gray-900">
-            {formatUSD(token0PriceInUsd + token1PriceInUsd)}
+            {formatUSD(value0 + value1)}
           </Typography>
         </div>
         <div className="flex items-center justify-between">
@@ -73,7 +61,7 @@ export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ 
             </Typography>
           </div>
           <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
-            {formatUSD(token0PriceInUsd)}
+            {formatUSD(value0)}
           </Typography>
         </div>
         <div className="flex items-center justify-between">
@@ -84,7 +72,7 @@ export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ 
             </Typography>
           </div>
           <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
-            {formatUSD(token1PriceInUsd)}
+            {formatUSD(value1)}
           </Typography>
         </div>
       </div>

@@ -23,8 +23,6 @@ const CONTRACT_ADDRESS = process.env['SWAP_CONTRACT'] || process.env['NEXT_PUBLI
 export const PoolPosition: FC<PoolPositionProps> = ({ row, isLoading, stakeAmount }) => {
   const { isLg } = useBreakpoint('lg')
   const { token0, token1 } = useTokensFromPools(row)
-  const token0Price = UseStablePrice(token0)
-  const token1Price = UseStablePrice(token1)
   const { account } = useWallet()
   const tokenAddress = row?.id
   const { data: LPBalancecoinInfo } = useTotalSupply(tokenAddress)
@@ -54,6 +52,8 @@ export const PoolPosition: FC<PoolPositionProps> = ({ row, isLoading, stakeAmoun
     totalSupply: Number(totalSupply),
     decimals: coinInfo?.data?.decimals,
   })
+  const token0Price = UseStablePrice(token0)
+  const token1Price = UseStablePrice(token1)
   const token0UnstakedInUsd = token0Price ? token0Price * Number(underlying0) : 0
   const token1UnstakedInUsd = token1Price ? token1Price * Number(underlying1) : 0
   const token0StakedInUsd = token0Price ? token0Price * Number(stakedUnderlying0) : 0
@@ -72,8 +72,22 @@ export const PoolPosition: FC<PoolPositionProps> = ({ row, isLoading, stakeAmoun
           </Typography>
         </div>
       </div>
-      <PoolPositionDesktop row={row} isLoading={isLoading} />
-      <PoolPositionStakedDesktop row={row} isLoading={isLoading} stakeAmount={stakeAmount} />
+      <PoolPositionDesktop
+        row={row}
+        isLoading={isLoading || isBalanceLoading || isLoadingSupply}
+        underlying0={underlying0}
+        underlying1={underlying1}
+        value0={token0UnstakedInUsd}
+        value1={token1UnstakedInUsd}
+      />
+      <PoolPositionStakedDesktop
+        row={row}
+        isLoading={isLoading || isBalanceLoading || isLoadingSupply}
+        underlying0={stakedUnderlying0}
+        underlying1={stakedUnderlying1}
+        value0={token0StakedInUsd}
+        value1={token0StakedInUsd}
+      />
     </div>
   )
 }
