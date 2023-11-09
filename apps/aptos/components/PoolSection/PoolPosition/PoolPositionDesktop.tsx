@@ -49,12 +49,8 @@ export const PoolPositionDesktop: FC<PoolPositionProps> = ({ row, isLoading }) =
     totalSupply: Number(totalSupply),
     decimals: LPSupply?.data?.decimals,
   })
-  const token0PriceInUsd = token0Price
-    ? token0Price * parseFloat(formatNumber(Number(underlying0), token0.decimals))
-    : 0
-  const token1PriceInUsd = token1Price
-    ? token1Price * parseFloat(formatNumber(Number(underlying1), token1.decimals))
-    : 0
+  const token0PriceInUsd = token0Price ? token0Price * Number(underlying0) : 0
+  const token1PriceInUsd = token1Price ? token1Price * Number(underlying1) : 0
   if (isLoading || isLoadingSupply || isPoolLoading || isBalanceLoading) {
     return (
       <div className="flex flex-col gap-3 px-5 py-4">
