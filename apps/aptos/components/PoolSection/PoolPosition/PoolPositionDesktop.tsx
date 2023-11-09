@@ -1,16 +1,16 @@
 import { useWallet } from '@aptos-labs/wallet-adapter-react'
-import { formatUSD } from '@sushiswap/format'
 import { Typography } from '@sushiswap/ui'
 import { Icon } from 'components/Icon'
 import { useParams } from 'next/navigation'
 import { FC, useMemo } from 'react'
 import { usePool } from 'utils/usePool'
 import { Pool } from 'utils/usePools'
-import UseStablePrice from 'utils/useStablePrice'
 import { useTokenBalance } from 'utils/useTokenBalance'
 import { useTokensFromPools } from 'utils/useTokensFromPool'
 import { useTotalSupply } from 'utils/useTotalSupply'
 import { useUnderlyingTokenBalanceFromPool } from 'utils/useUnderlyingTokenBalanceFromPool'
+import { formatNumber } from 'utils/utilFunctions'
+
 interface PoolPositionProps {
   row: Pool
   isLoading: boolean
@@ -21,8 +21,6 @@ const CONTRACT_ADDRESS = process.env['SWAP_CONTRACT'] || process.env['NEXT_PUBLI
 export const PoolPositionDesktop: FC<PoolPositionProps> = ({ row, isLoading }) => {
   const router = useParams()
   const { token0, token1 } = useTokensFromPools(row)
-  const token0Price = UseStablePrice(token0)
-  const token1Price = UseStablePrice(token1)
   const { account } = useWallet()
   const tokenAddress = decodeURIComponent(router?.id)
   const { data: pool, isLoading: isPoolLoading } = usePool(tokenAddress)
@@ -74,7 +72,7 @@ export const PoolPositionDesktop: FC<PoolPositionProps> = ({ row, isLoading }) =
             Unstaked Position
           </Typography>
           <Typography variant="xs" weight={500} className="dark:text-slate-100 text-gray-900">
-            {formatUSD(token0PriceInUsd + token1PriceInUsd)}
+            {'$0.00'}
           </Typography>
         </div>
       }
@@ -86,7 +84,7 @@ export const PoolPositionDesktop: FC<PoolPositionProps> = ({ row, isLoading }) =
           </Typography>
         </div>
         <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
-          {formatUSD(token0PriceInUsd)}
+          {'$0.00'}
         </Typography>
       </div>
       <div className="flex items-center justify-between">
@@ -97,7 +95,7 @@ export const PoolPositionDesktop: FC<PoolPositionProps> = ({ row, isLoading }) =
           </Typography>
         </div>
         <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
-          {formatUSD(token1PriceInUsd)}
+          {'$0.00'}
         </Typography>
       </div>
     </div>

@@ -94,7 +94,7 @@ export const PoolMyRewards: FC<Props> = ({ reward, decimals, isLoading }) => {
                 </Typography>
               </div>
               <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
-                {`$0.00`}
+                {formatUSD(aptosPriceInUsd)}
               </Typography>
             </div>
           )}
