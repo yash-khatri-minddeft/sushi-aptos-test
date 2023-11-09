@@ -27,6 +27,7 @@ export const PoolMyRewards: FC<Props> = ({ reward, decimals, isLoading }) => {
   const aptosPriceInUsd = aptosPrice ? aptosPrice * parseFloat(formatNumber(reward, decimals as number)) : 0
   const tokenAddress = decodeURIComponent(router?.id)
   const [isTransactionPending, setTransactionPending] = useState<boolean>(false)
+  console.log(reward)
   const harvest = async () => {
     const provider = new Provider(providerNetwork)
     setTransactionPending(true)
@@ -89,7 +90,7 @@ export const PoolMyRewards: FC<Props> = ({ reward, decimals, isLoading }) => {
                   alt=""
                 />
                 <Typography variant="sm" weight={600} className="dark:text-slate-300 text-gray-700">
-                  {reward ? parseFloat(formatNumber(reward, decimals as number)) : 0} APT
+                  {reward ? formatNumber(reward, decimals as number) : 0} APT
                 </Typography>
               </div>
               <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
