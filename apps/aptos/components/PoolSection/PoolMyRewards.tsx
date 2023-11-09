@@ -24,7 +24,7 @@ export const PoolMyRewards: FC<Props> = ({ reward, decimals, isLoading }) => {
   const { connected, signAndSubmitTransaction } = useWallet()
   const aptos = Aptos
   const aptosPrice = UseStablePrice(aptos)
-  const aptosPriceInUsd = aptosPrice ? aptosPrice * reward : 0
+  const aptosPriceInUsd = aptosPrice ? aptosPrice * parseFloat(formatNumber(reward, decimals as number)) : 0
   const tokenAddress = decodeURIComponent(router?.id)
   const [isTransactionPending, setTransactionPending] = useState<boolean>(false)
   const harvest = async () => {

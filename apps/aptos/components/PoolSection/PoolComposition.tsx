@@ -1,7 +1,7 @@
 import { List } from '@sushiswap/ui/future/components/list/List'
 import { Icon } from 'components/Icon'
 import { FC } from 'react'
-import { Pool, usePools } from 'utils/usePools'
+import { Pool } from 'utils/usePools'
 import { useTokensFromPools } from 'utils/useTokensFromPool'
 import { formatNumber } from 'utils/utilFunctions'
 
@@ -17,6 +17,7 @@ export const PoolComposition: FC<PoolCompositionProps> = ({ row }) => {
     <List>
       <div className="flex items-center justify-between">
         <List.Label>Pool Liquidity</List.Label>
+        <List.Label>{'$00.00m'}</List.Label>
       </div>
       <List.Control>
         {
