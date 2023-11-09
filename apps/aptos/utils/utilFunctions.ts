@@ -258,7 +258,8 @@ function computePriceImpact(midPrice: number, amountIn: number, amountOut: numbe
 }
 
 export const formatNumber = (number: number, decimals: number) => {
-  let _number = String(number / 10 ** decimals)
+  if (number === 0) return '0'
+  let _number = (number / 10 ** decimals).toFixed(decimals)
   if (_number) {
     if (_number.includes('.') && _number.split('.')[1].length > 8) {
       _number = Number(_number).toFixed(8)
