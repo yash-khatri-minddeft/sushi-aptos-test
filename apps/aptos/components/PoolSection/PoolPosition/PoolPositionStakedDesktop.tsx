@@ -1,7 +1,9 @@
+import { formatUSD } from '@sushiswap/format'
 import { Typography } from '@sushiswap/ui'
 import { Icon } from 'components/Icon'
 import { FC, useMemo } from 'react'
 import { Pool } from 'utils/usePools'
+import UseStablePrice from 'utils/useStablePrice'
 import { useTokensFromPools } from 'utils/useTokensFromPool'
 import { useTotalSupply } from 'utils/useTotalSupply'
 import { useUnderlyingTokenBalanceFromPool } from 'utils/useUnderlyingTokenBalanceFromPool'
@@ -14,6 +16,8 @@ interface PoolPositionStakedDesktopProps {
 
 export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ row, isLoading, stakeAmount }) => {
   const { token0, token1 } = useTokensFromPools(row)
+  const token0PriceStack = UseStablePrice(token0)
+  const token1PriceStack = UseStablePrice(token1)
   const tokenAddress = row?.id
   const { data: coinInfo } = useTotalSupply(tokenAddress)
 
@@ -29,6 +33,8 @@ export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ 
     totalSupply: Number(totalSupply),
     decimals: coinInfo?.data?.decimals,
   })
+  const token0PriceInUsd = token0PriceStack ? token0PriceStack * Number(underlying0) : 0
+  const token1PriceInUsd = token1PriceStack ? token1PriceStack * Number(underlying1) : 0
 
   if (isLoading) {
     return (
@@ -56,7 +62,7 @@ export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ 
             Staked Position
           </Typography>
           <Typography variant="xs" weight={500} className="dark:text-slate-100 text-gray-900">
-            {`$0.00`}
+            {formatUSD(token0PriceInUsd + token1PriceInUsd)}
           </Typography>
         </div>
         <div className="flex items-center justify-between">
@@ -67,7 +73,7 @@ export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ 
             </Typography>
           </div>
           <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
-            {`$0.00`}
+            {formatUSD(token0PriceInUsd)}
           </Typography>
         </div>
         <div className="flex items-center justify-between">
@@ -78,7 +84,7 @@ export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ 
             </Typography>
           </div>
           <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
-            {`$0.00`}
+            {formatUSD(token1PriceInUsd)}
           </Typography>
         </div>
       </div>
