@@ -5,10 +5,13 @@ import { Button } from '@sushiswap/ui/future/components/button'
 import { Provider } from 'aptos'
 import WalletSelector from 'components/WalletSelector'
 import { createToast } from 'components/toast'
+import { Aptos } from 'lib/coins'
 import { providerNetwork } from 'lib/constants'
 import { useParams } from 'next/navigation'
 import { FC, useState } from 'react'
 import { formatNumber } from 'utils/utilFunctions'
+import { formatUSD } from '@sushiswap/format'
+import UseStablePrice from 'utils/useStablePrice'
 interface Props {
   reward: number
   decimals: number | undefined
@@ -19,6 +22,9 @@ const CONTRACT_ADDRESS = process.env['SWAP_CONTRACT'] || process.env['NEXT_PUBLI
 export const PoolMyRewards: FC<Props> = ({ reward, decimals, isLoading }) => {
   const router = useParams()
   const { connected, signAndSubmitTransaction } = useWallet()
+  const aptos = Aptos
+  const aptosPrice = UseStablePrice(aptos)
+  const aptosPriceInUsd = aptosPrice ? aptosPrice * reward : 0
   const tokenAddress = decodeURIComponent(router?.id)
   const [isTransactionPending, setTransactionPending] = useState<boolean>(false)
   const harvest = async () => {
@@ -62,7 +68,7 @@ export const PoolMyRewards: FC<Props> = ({ reward, decimals, isLoading }) => {
           </Typography>
           <div className="flex flex-col">
             <Typography variant="sm" weight={600} className="text-right dark:text-slate-50 text-gray-900">
-              {`$0.00`}
+              {formatUSD(aptosPriceInUsd)}
             </Typography>
           </div>
         </div>
