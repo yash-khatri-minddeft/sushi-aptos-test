@@ -17,7 +17,6 @@ export const PoolComposition: FC<PoolCompositionProps> = ({ row }) => {
     <List>
       <div className="flex items-center justify-between">
         <List.Label>Pool Liquidity</List.Label>
-        <List.Label>{'$00.00m'}</List.Label>
       </div>
       <List.Control>
         {
@@ -25,7 +24,7 @@ export const PoolComposition: FC<PoolCompositionProps> = ({ row }) => {
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <Icon currency={token0} width={18} height={18} />
-                {balanceX.toFixed(4)} {' ' + token0.symbol}
+                {Number(balanceX)} {' ' + token0.symbol}
                 <span className="text-gray-600 dark:text-slate-400">({'$00.00m'})</span>
               </div>
             </div>
@@ -36,7 +35,7 @@ export const PoolComposition: FC<PoolCompositionProps> = ({ row }) => {
             <div className="flex flex-col gap-2">
               <div className="flex items-center gap-2">
                 <Icon currency={token1} width={18} height={18} />
-                {balanceY.toFixed(4)} {' ' + token1.symbol}
+                {Number(balanceY)} {' ' + token1.symbol}
                 <span className="text-gray-600 dark:text-slate-400">({'$00.00m'})</span>
               </div>
             </div>

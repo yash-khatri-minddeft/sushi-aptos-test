@@ -2,11 +2,11 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Pool, usePools } from 'utils/usePools'
 import { PaginationState, SortingState, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table'
 import { GenericTable } from '@sushiswap/ui/future/components/table/GenericTable'
-import { NAME_COLUMN } from './Cells/columns'
+import { NAME_COLUMN, RESERVE_COLUMN } from './Cells/columns'
 import { useFarms } from 'utils/useFarms'
 import { useDebounce } from '@sushiswap/hooks'
 
-const columns = [NAME_COLUMN] as any
+const columns = [NAME_COLUMN, RESERVE_COLUMN] as any
 const CONTRACT_ADDRESS = process.env['NEXT_PUBLIC_SWAP_CONTRACT'] || process.env['NEXT_PUBLIC_SWAP_CONTRACT']
 interface Props {
   farmsOnly: boolean

@@ -205,8 +205,8 @@ function RouteDemo(firstInput: any, ARR: any, tokenGraph: any, coinA: any, coinB
   // let firstInput = 100000000
   let lastOutput = 0
   const bestFinder = []
-  const prices = []
   for (let route of allRoutes) {
+    const prices = []
     if (route.length < 6) {
       if (ARR[route[0] + '|||' + route[1]] || ARR[route[1] + '|||' + route[0]]) {
         const res_x = ARR[route[0] + '|||' + route[1]]?.res_x || ARR[route[1] + '|||' + route[0]]?.res_y
@@ -235,7 +235,6 @@ function RouteDemo(firstInput: any, ARR: any, tokenGraph: any, coinA: any, coinB
           }
         }
       }
-
       const midPrice = prices.slice(1).reduce((accumulator, currentValue) => accumulator * currentValue, prices[0])
       const priceImpact = computePriceImpact(midPrice, firstInput, lastOutput)
 
@@ -259,19 +258,19 @@ function computePriceImpact(midPrice: number, amountIn: number, amountOut: numbe
 }
 
 export const formatNumber = (number: number, decimals: number) => {
-  if (number) {
-    number = number / 10 ** decimals
-    if (String(number).includes('.') && String(number).split('.')[1].length > 8) {
-      number = parseFloat(number.toFixed(9))
+  let _number = String(number / 10 ** decimals)
+  if (_number) {
+    if (_number.includes('.') && _number.split('.')[1].length > 8) {
+      _number = Number(_number).toFixed(8)
     }
-    if (String(number).includes('.') && parseFloat(String(number).split('.')[0]) > 0) {
-      number = parseFloat(number.toFixed(4))
+    if (_number.includes('.') && parseFloat(_number.split('.')[0]) > 0) {
+      _number = Number(_number).toFixed(4)
     }
   } else {
-    number = 0
+    _number = '0'
   }
-  if (number <= 0.000001) {
-    return 0
+  if (Number(_number) < 0.000000001) {
+    return '0'
   }
-  return number
+  return _number
 }

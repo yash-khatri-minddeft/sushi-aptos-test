@@ -9,7 +9,7 @@ interface Params {
   decimals: number | undefined
 }
 
-type UseUnderlyingTokenBalanceFromPairParams = (params: Params) => [number | undefined, number | undefined]
+type UseUnderlyingTokenBalanceFromPairParams = (params: Params) => [string | undefined, string | undefined]
 
 export const useUnderlyingTokenBalanceFromPool: UseUnderlyingTokenBalanceFromPairParams = ({
   balance,
@@ -24,7 +24,7 @@ export const useUnderlyingTokenBalanceFromPool: UseUnderlyingTokenBalanceFromPai
     }
 
     if (totalSupply === 0) {
-      return [0, 0]
+      return ['0', '0']
     }
     const underlying0 = (reserve0 * balance) / totalSupply
     const underlying1 = (reserve1 * balance) / totalSupply

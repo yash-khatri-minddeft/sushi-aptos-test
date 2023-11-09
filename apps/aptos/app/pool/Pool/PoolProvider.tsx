@@ -1,3 +1,4 @@
+import { useSlippageTolerance } from '@sushiswap/hooks'
 import { FC, ReactNode, createContext, useContext, useMemo, useReducer } from 'react'
 import { Token } from 'utils/tokenType'
 import { getTokensWithoutKey } from 'utils/useTokens'
@@ -18,6 +19,8 @@ type State = {
   error: string
   pairs: object
   poolPairRatio: number
+  slippageAmount0: number
+  slippageAmount1: number
 }
 
 type PoolApi = {
@@ -32,6 +35,8 @@ type PoolApi = {
   setError(value: string): void
   setPairs(value: object): void
   setPoolPairRatio(value: number): void
+  setSlippageAmount0(amount1: number): void
+  setSlippageAmount1(amount2: number): void
 }
 
 export const PoolStateContext = createContext<State>({} as State)
@@ -49,8 +54,11 @@ type Actions =
   | { type: 'setError'; value: string }
   | { type: 'setPairs'; value: object }
   | { type: 'setPoolPairRatio'; value: number }
+  | { type: 'setSlippageAmount0'; value: number }
+  | { type: 'setSlippageAmount1'; value: number }
 
 export const PoolProvider: FC<PoolProviderProps> = ({ children }) => {
+  const [slippageTolerance] = useSlippageTolerance()
   const baseTokens = getTokensWithoutKey()
   const reducer = (state: State, action: Actions) => {
     switch (action.type) {
@@ -76,6 +84,24 @@ export const PoolProvider: FC<PoolProviderProps> = ({ children }) => {
         return { ...state, pairs: action.value }
       case 'setPoolPairRatio':
         return { ...state, poolPairRatio: action.value }
+      case 'setSlippageAmount0':
+        return {
+          ...state,
+          slippageAmount0:
+            action.value -
+            (action.value *
+              parseFloat(slippageTolerance ? (slippageTolerance === 'AUTO' ? '0.5' : slippageTolerance) : '0.5')) /
+              100,
+        }
+      case 'setSlippageAmount1':
+        return {
+          ...state,
+          slippageAmount1:
+            action.value -
+            (action.value *
+              parseFloat(slippageTolerance ? (slippageTolerance === 'AUTO' ? '0.5' : slippageTolerance) : '0.5')) /
+              100,
+        }
     }
   }
 
@@ -91,6 +117,8 @@ export const PoolProvider: FC<PoolProviderProps> = ({ children }) => {
     error: '',
     pairs: {},
     poolPairRatio: 0,
+    slippageAmount0: 0,
+    slippageAmount1: 0,
   })
   const state = useMemo(() => {
     return { ...internalState }
@@ -107,6 +135,8 @@ export const PoolProvider: FC<PoolProviderProps> = ({ children }) => {
     const setError = (value: string) => dispatch({ type: 'setError', value })
     const setPairs = (value: object) => dispatch({ type: 'setPairs', value })
     const setPoolPairRatio = (value: number) => dispatch({ type: 'setPoolPairRatio', value })
+    const setSlippageAmount0 = (value: number) => dispatch({ type: 'setSlippageAmount0', value })
+    const setSlippageAmount1 = (value: number) => dispatch({ type: 'setSlippageAmount1', value })
 
     return {
       setToken0,
@@ -120,6 +150,8 @@ export const PoolProvider: FC<PoolProviderProps> = ({ children }) => {
       setError,
       setPairs,
       setPoolPairRatio,
+      setSlippageAmount0,
+      setSlippageAmount1,
     }
   }, [internalState, baseTokens])
   return (

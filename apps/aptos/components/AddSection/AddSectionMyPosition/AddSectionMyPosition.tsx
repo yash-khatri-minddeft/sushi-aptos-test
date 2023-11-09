@@ -6,13 +6,13 @@ import { Token } from 'utils/tokenType'
 
 interface Props {
   balance: number
-  underlying0: number | undefined
-  underlying1: number | undefined
+  underlying0: string | undefined
+  underlying1: string | undefined
   token0: Token
   token1: Token
-  farmUnderlying0: number | undefined
-  farmUnderlying1: number | undefined
-  isLoading:boolean
+  farmUnderlying0: string | undefined
+  farmUnderlying1: string | undefined
+  isLoading: boolean
 }
 
 export const AddSectionMyPosition: FC<Props> = ({
@@ -23,7 +23,7 @@ export const AddSectionMyPosition: FC<Props> = ({
   token1,
   farmUnderlying0,
   farmUnderlying1,
-  isLoading
+  isLoading,
 }) => {
   return (
     <div className="flex flex-col bg-white dark:bg-opacity-[0.04] rounded-2xl">

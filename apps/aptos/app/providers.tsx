@@ -6,9 +6,18 @@ import { PontemWallet } from '@pontem/wallet-adapter-plugin'
 import { FewchaWallet } from 'fewcha-plugin-wallet-adapter'
 import { MartianWallet } from '@martianwallet/aptos-wallet-adapter'
 import { RiseWallet } from '@rise-wallet/wallet-adapter'
+import { MSafeWalletAdapter } from '@msafe/aptos-wallet-adapter'
 import { ThemeProvider } from '@sushiswap/ui'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-const wallets = [new PetraWallet(), new PontemWallet(), new FewchaWallet(), new MartianWallet(), new RiseWallet()]
+import { MSafeOrigin } from 'lib/constants'
+const wallets = [
+  new PetraWallet(),
+  new PontemWallet(),
+  new FewchaWallet(),
+  new MartianWallet(),
+  new RiseWallet(),
+  new MSafeWalletAdapter(MSafeOrigin),
+]
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const queryClient = new QueryClient()

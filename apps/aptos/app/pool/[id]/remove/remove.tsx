@@ -130,8 +130,8 @@ const _Remove: FC = () => {
               <AppearOnMount>
                 <AddSectionMyPosition
                   balance={balance}
-                  underlying0={parseFloat(underlying0?.toFixed(4) as string)}
-                  underlying1={parseFloat(underlying1?.toFixed(4) as string)}
+                  underlying0={underlying0}
+                  underlying1={underlying1}
                   token0={token0}
                   token1={token1}
                   farmUnderlying0={farmUnderlying0}

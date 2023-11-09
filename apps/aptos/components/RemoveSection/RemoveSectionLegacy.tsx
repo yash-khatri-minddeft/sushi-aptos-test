@@ -16,8 +16,8 @@ interface Props {
   token0: Token
   token1: Token
   balance: number
-  underlying0: number | undefined
-  underlying1: number | undefined
+  underlying0: string | undefined
+  underlying1: string | undefined
   totalSupply: string | undefined
   isFarm: boolean
 }
@@ -117,8 +117,8 @@ export const RemoveSectionLegacy = ({
       token0={token0}
       token1={token1}
       balance={balance}
-      token0MinMinimum={formatNumber(minAmount0 as number, token0.decimals)}
-      token1MinMinimum={formatNumber(minAmount1 as number, token1.decimals)}
+      token0MinMinimum={Number(formatNumber(minAmount0 as number, token0.decimals))}
+      token1MinMinimum={Number(formatNumber(minAmount1 as number, token1.decimals))}
     >
       <>
         {connected ? (

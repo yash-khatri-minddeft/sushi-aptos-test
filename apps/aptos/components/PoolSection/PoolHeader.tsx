@@ -12,7 +12,6 @@ interface PoolHeader {
 }
 
 const CONTRACT_ADDRESS = process.env['NEXT_PUBLIC_SWAP_CONTRACT'] || process.env['NEXT_PUBLIC_SWAP_CONTRACT']
-console.log(providerNetwork)
 export const PoolHeader: FC<PoolHeader> = ({ row }) => {
   const { token0, token1 } = useTokensFromPools(row)
   return (

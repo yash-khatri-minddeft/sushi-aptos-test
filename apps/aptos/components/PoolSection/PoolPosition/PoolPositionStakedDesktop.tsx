@@ -63,7 +63,7 @@ export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ 
           <div className="flex items-center gap-2">
             <Icon currency={token0} width={20} height={20} />
             <Typography variant="sm" weight={600} className="dark:text-slate-300 text-gray-700">
-              {underlying0 ? underlying0.toFixed(6) : 0} {token0.symbol}
+              {underlying0 ? Number(underlying0).toFixed(6) : 0} {token0.symbol}
             </Typography>
           </div>
           <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
@@ -74,7 +74,7 @@ export const PoolPositionStakedDesktop: FC<PoolPositionStakedDesktopProps> = ({ 
           <div className="flex items-center gap-2">
             <Icon currency={token1} width={20} height={20} />
             <Typography variant="sm" weight={600} className="dark:text-slate-300 text-gray-700">
-              {underlying1 ? underlying1.toFixed(6) : 0} {token1.symbol}
+              {underlying1 ? Number(underlying1).toFixed(6) : 0} {token1.symbol}
             </Typography>
           </div>
           <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">

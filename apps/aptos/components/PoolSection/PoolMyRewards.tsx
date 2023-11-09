@@ -83,7 +83,7 @@ export const PoolMyRewards: FC<Props> = ({ reward, decimals, isLoading }) => {
                   alt=""
                 />
                 <Typography variant="sm" weight={600} className="dark:text-slate-300 text-gray-700">
-                  {reward ? parseFloat(String(formatNumber(reward, decimals as number))) : 0} APT
+                  {reward ? parseFloat(formatNumber(reward, decimals as number)) : 0} APT
                 </Typography>
               </div>
               <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">

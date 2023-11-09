@@ -5,14 +5,21 @@ import { Token } from 'utils/tokenType'
 
 interface Props {
   balance: number
-  underlying0: number | undefined
-  underlying1: number | undefined
+  underlying0: string | undefined
+  underlying1: string | undefined
   token0: Token
   token1: Token
-  isLoading:boolean
+  isLoading: boolean
 }
 
-export const AddSectionMyPositionStaked: FC<Props> = ({ balance, underlying0, underlying1, token0, token1, isLoading }) => {
+export const AddSectionMyPositionStaked: FC<Props> = ({
+  balance,
+  underlying0,
+  underlying1,
+  token0,
+  token1,
+  isLoading,
+}) => {
   if (isLoading) {
     return (
       <div className="flex flex-col gap-2">

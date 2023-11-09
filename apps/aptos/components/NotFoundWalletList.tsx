@@ -2,6 +2,7 @@ import { Transition } from '@headlessui/react'
 import { ChevronRightIcon } from '@heroicons/react/24/outline'
 import React, { Fragment, SVGProps, useState } from 'react'
 import { Wallet } from '@aptos-labs/wallet-adapter-core'
+import { MSafeOrigin } from 'lib/constants'
 interface Props {
   Icons: Record<string, (props: SVGProps<SVGSVGElement>) => JSX.Element | null>
   wallet: Wallet
@@ -12,9 +13,12 @@ export const NotFoundWalletList = ({ Icons, wallet }: Props) => {
     <a
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      href={wallet.url}
+      href={
+        wallet.name == 'MSafe' ? `${MSafeOrigin}apps/0?url=${encodeURIComponent(window.location.href)}` : wallet.url
+      }
       target="_blank"
       className="p-0 items-center hover:bg-black/[0.04] active:bg-black/[0.06] hover:dark:bg-white/[0.02] active:dark:bg-white/[0.03] relative flex gap-4 px-4 py-3 w-full cursor-pointer rounded-xl"
+      rel="noreferrer"
     >
       <span className="h-[18px] w-[18px]">
         {React.createElement(Icons[wallet.name], {

@@ -32,7 +32,7 @@ export const getTokenDetails = async ({ address, hasToken, customTokens }: GetTo
       symbol: data.data.symbol,
     } as Token
   }
-  return {} as Token
+  return null
 }
 
 interface UseTokenParams {

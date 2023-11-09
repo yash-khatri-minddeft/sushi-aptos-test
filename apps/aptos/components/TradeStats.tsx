@@ -17,9 +17,7 @@ export const TradeStats = () => {
     useSwapState()
   const { account } = useWallet()
   const loading = Boolean(isLoadingPrice && Number(amount) > 0) || isPriceFetching
-  const outputSwapTokenAmount = outputAmount
-    ? String(formatNumber(parseFloat(outputAmount), token1 ? token1.decimals : 8))
-    : ''
+  const outputSwapTokenAmount = outputAmount ? formatNumber(parseFloat(outputAmount), token1 ? token1.decimals : 8) : ''
 
   const minOutput = slippageAmount ? formatNumber(slippageAmount, token1 ? token1.decimals : 8) : 0
   const { data: balance } = useTokenBalance({

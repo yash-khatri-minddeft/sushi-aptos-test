@@ -5,8 +5,7 @@ import { Layout } from 'components/Layout'
 import { ContentBlock } from 'components/ContentBlock'
 import TradeInput from 'components/TradeInput'
 import { PlusIcon, ArrowLeftIcon } from '@heroicons/react/20/solid'
-import { getPoolPairs } from 'utils/utilFunctions'
-import { SelectTokensWidget } from 'components/NewPositionSection'
+import { formatNumber, getPoolPairs } from 'utils/utilFunctions'
 import { usePoolActions, usePoolState } from 'app/pool/Pool/PoolProvider'
 import { Provider } from 'aptos'
 import { useWallet } from '@aptos-labs/wallet-adapter-react'
@@ -21,6 +20,8 @@ import { useAccount } from 'utils/useAccount'
 import { providerNetwork } from 'lib/constants'
 import { useSearchParams } from 'next/navigation'
 import getTokenFromAddress from 'utils/getTokenFromAddress'
+import { SettingsModule, SettingsOverlay } from '@sushiswap/ui/future/components/settings'
+import { useSwapState } from 'app/swap/trade/TradeProvider'
 
 export function Add() {
   // const router = useRouter()
@@ -45,7 +46,10 @@ export function Add() {
               Go back to pools list
             </span>
           </Link>
-          <h1 className="mt-2 text-3xl font-medium">Add Liquidity</h1>
+          <div className="flex items-center justify-between">
+            <h1 className="mt-2 text-3xl font-medium">Add Liquidity</h1>
+            <SettingsOverlay modules={[SettingsModule.SlippageTolerance]} />
+          </div>
         </div>
         <div className="grid grid-cols-1 sm:w-[340px] md:w-[572px] gap-10">
           <div className="hidden md:block">
@@ -58,12 +62,20 @@ export function Add() {
 }
 
 const _Add: FC = () => {
-  const { setToken0, setToken1, setAmount0, setAmount1, setisTransactionPending } = usePoolActions()
-  const { token0, token1, amount0, amount1, isPriceFetching, poolPairRatio, pairs } = usePoolState()
+  const {
+    setToken0,
+    setToken1,
+    setAmount0,
+    setAmount1,
+    setisTransactionPending,
+    setSlippageAmount0,
+    setSlippageAmount1,
+  } = usePoolActions()
+  const { token0, token1, amount0, amount1, isPriceFetching, poolPairRatio, pairs, slippageAmount0, slippageAmount1 } =
+    usePoolState()
   const { network, account, signAndSubmitTransaction, connected } = useWallet()
   const [error0, setError0] = useState('')
   const [error1, setError1] = useState('')
-  console.log(poolPairRatio)
 
   type payloadType = {
     type: string
@@ -71,14 +83,15 @@ const _Add: FC = () => {
     arguments: number[]
     function: string
   }
-
   const addLiquidity = async (close: () => void) => {
     const provider = new Provider(providerNetwork)
     const payload: payloadType = liquidityArgs(
       token0.address,
       token1.address,
       parseInt(String(Number(amount0) * 10 ** token0.decimals)),
-      parseInt(String(Number(amount1) * 10 ** token1.decimals))
+      parseInt(String(Number(amount1) * 10 ** token1.decimals)),
+      parseInt(String(slippageAmount0)),
+      parseInt(String(slippageAmount1))
     )
     setisTransactionPending(true)
     if (!account) return []
@@ -114,7 +127,6 @@ const _Add: FC = () => {
     account: account?.address as string,
     currency: token1.address,
   })
-  console.log(pairs)
   const tradeVal = useRef<HTMLInputElement>(null)
   const tradeVal1 = useRef<HTMLInputElement>(null)
   const onChangeToken0TypedAmount = useCallback(
@@ -164,6 +176,10 @@ const _Add: FC = () => {
   useEffect(() => {
     PoolInputBalance1(String(amount1))
   }, [amount1, token1, balance1])
+  useEffect(() => {
+    setSlippageAmount0(amount0 ? Number(amount0) * 10 ** token0.decimals : 0)
+    setSlippageAmount1(amount1 ? Number(amount1) * 10 ** token1.decimals : 0)
+  }, [amount0, amount1])
   // useEffect(() => {
   //   onChangeToken1TypedAmount(String(amount1))
   // }, [account, connected, network, amount1, balance1, poolPairRatio])
@@ -206,7 +222,6 @@ const _Add: FC = () => {
   return (
     <>
       <div className="flex flex-col order-3 gap-[64px] pb-40 sm:order-2">
-        <SelectTokensWidget handleSwap={swapTokenIfAlreadySelected} />
         <ContentBlock title={<span className="text-gray-900 dark:text-white">Deposit.</span>}>
           <div className="flex flex-col gap-4">
             <TradeInput

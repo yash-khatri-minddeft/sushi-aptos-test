@@ -6,6 +6,7 @@ import { useSwapState } from 'app/swap/trade/TradeProvider'
 import { useSwapRouter } from 'utils/useSwapRouter'
 import { warningSeverity } from 'lib/swap/warningSeverity'
 import { useTokenBalance } from 'utils/useTokenBalance'
+import { Button } from '@sushiswap/ui/future/components/button'
 
 export const SwapButton = () => {
   const { connected, account } = useWallet()
@@ -22,14 +23,13 @@ export const SwapButton = () => {
       setChecked(false)
     }
   }, [routes])
-  console.log(!checked && warningSeverity(routes?.priceImpact) > 3)
   return (
     <Modal.Trigger tag="review-modal">
       {({ open }) => (
         <>
           <div className="pt-4">
             {connected ? (
-              <button
+              <Button
                 className={`btn w-full flex items-center justify-center gap-2 cursor-pointer transition-all bg-blue hover:bg-blue-600 active:bg-blue-700 text-white px-6 h-[52px] rounded-xl text-base font-semibold ${
                   noRouteFound ||
                   error ||
@@ -47,6 +47,7 @@ export const SwapButton = () => {
                 onClick={() => {
                   amount ? open() : {}
                 }}
+                color={warningSeverity(routes?.priceImpact) >= 3 ? 'red' : 'blue'}
               >
                 {!checked && warningSeverity(routes?.priceImpact) >= 3 ? (
                   <>Price impact too high</>
@@ -59,7 +60,7 @@ export const SwapButton = () => {
                 ) : (
                   <>Enter Amount</>
                 )}
-              </button>
+              </Button>
             ) : (
               <WalletSelector hideChevron color="blue" size="xl" fullWidth={true} />
             )}

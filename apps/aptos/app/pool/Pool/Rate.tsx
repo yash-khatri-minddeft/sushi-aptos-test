@@ -14,7 +14,6 @@ interface Rate {
 
 export const Rate: FC<Rate> = ({ children }) => {
   const { token0, token1, poolPairRatio, pairs, amount0, amount1 } = usePoolState()
-  console.log(pairs?.data)
   const noPairRatio = useMemo(() => {
     return Number(amount1) / Number(amount0)
   }, [amount0, amount1])

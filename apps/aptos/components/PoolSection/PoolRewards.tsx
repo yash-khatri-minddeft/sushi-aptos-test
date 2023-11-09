@@ -1,8 +1,7 @@
 import { List } from '@sushiswap/ui/future/components/list/List'
 import { FC } from 'react'
-import { formatNumber } from 'utils/utilFunctions'
 
-export const PoolRewards: FC<{ isFarm: boolean; rewardsPerDay: number }> = ({ isFarm, rewardsPerDay }) => {
+export const PoolRewards: FC<{ isFarm: boolean; rewardsPerDay: string }> = ({ isFarm, rewardsPerDay }) => {
   if (!isFarm) return <></>
   return (
     <List>

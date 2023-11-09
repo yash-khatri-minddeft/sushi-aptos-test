@@ -8,6 +8,7 @@ import { PetraIcon } from 'walletIcons/PetraIcon'
 import { PontemIcon } from 'walletIcons/PontemIcon'
 import { RiseIcon } from 'walletIcons/RiseIcon'
 import { NotFoundWalletList } from './NotFoundWalletList'
+import { MSafeIcon } from 'walletIcons/MSafeIcon'
 
 const Icons: Record<string, (props: SVGProps<SVGSVGElement>) => JSX.Element | null> = {
   Petra: PetraIcon,
@@ -15,6 +16,7 @@ const Icons: Record<string, (props: SVGProps<SVGSVGElement>) => JSX.Element | nu
   Fewcha: FewchaIcon,
   Martian: MartianIcon,
   Rise: RiseIcon,
+  MSafe: MSafeIcon,
 }
 
 export const ConnectView: FC<{ close(): void }> = ({ close }) => {
