@@ -1,14 +1,18 @@
 import { useWallet } from '@aptos-labs/wallet-adapter-react'
+import { formatUSD } from '@sushiswap/format'
 import { Typography } from '@sushiswap/ui'
 import { Icon } from 'components/Icon'
-import { useParams } from 'next/navigation'
+import { Aptos } from 'lib/coins'
+import { useParams, useSearchParams } from 'next/navigation'
 import { FC, useMemo } from 'react'
 import { usePool } from 'utils/usePool'
 import { Pool } from 'utils/usePools'
+import UseStablePrice from 'utils/useStablePrice'
 import { useTokenBalance } from 'utils/useTokenBalance'
 import { useTokensFromPools } from 'utils/useTokensFromPool'
 import { useTotalSupply } from 'utils/useTotalSupply'
 import { useUnderlyingTokenBalanceFromPool } from 'utils/useUnderlyingTokenBalanceFromPool'
+import { formatNumber } from 'utils/utilFunctions'
 
 interface PoolPositionProps {
   row: Pool
@@ -20,6 +24,8 @@ const CONTRACT_ADDRESS = process.env['SWAP_CONTRACT'] || process.env['NEXT_PUBLI
 export const PoolPositionDesktop: FC<PoolPositionProps> = ({ row, isLoading }) => {
   const router = useParams()
   const { token0, token1 } = useTokensFromPools(row)
+  const token0Price = UseStablePrice(token0)
+  const token1Price = UseStablePrice(token1)
   const { account } = useWallet()
   const tokenAddress = decodeURIComponent(router?.id)
   const { data: pool, isLoading: isPoolLoading } = usePool(tokenAddress)
@@ -43,6 +49,12 @@ export const PoolPositionDesktop: FC<PoolPositionProps> = ({ row, isLoading }) =
     totalSupply: Number(totalSupply),
     decimals: LPSupply?.data?.decimals,
   })
+  const token0PriceInUsd = token0Price
+    ? token0Price * parseFloat(formatNumber(Number(underlying0), token0.decimals))
+    : 0
+  const token1PriceInUsd = token1Price
+    ? token1Price * parseFloat(formatNumber(Number(underlying1), token1.decimals))
+    : 0
   if (isLoading || isLoadingSupply || isPoolLoading || isBalanceLoading) {
     return (
       <div className="flex flex-col gap-3 px-5 py-4">
@@ -69,7 +81,7 @@ export const PoolPositionDesktop: FC<PoolPositionProps> = ({ row, isLoading }) =
             Unstaked Position
           </Typography>
           <Typography variant="xs" weight={500} className="dark:text-slate-100 text-gray-900">
-            {'$0.00'}
+            {formatUSD(token0PriceInUsd + token1PriceInUsd)}
           </Typography>
         </div>
       }
@@ -81,7 +93,7 @@ export const PoolPositionDesktop: FC<PoolPositionProps> = ({ row, isLoading }) =
           </Typography>
         </div>
         <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
-          {'$0.00'}
+          {formatUSD(token0PriceInUsd)}
         </Typography>
       </div>
       <div className="flex items-center justify-between">
@@ -92,7 +104,7 @@ export const PoolPositionDesktop: FC<PoolPositionProps> = ({ row, isLoading }) =
           </Typography>
         </div>
         <Typography variant="xs" weight={500} className="dark:text-slate-400 text-slate-600">
-          {'$0.00'}
+          {formatUSD(token1PriceInUsd)}
         </Typography>
       </div>
     </div>
