@@ -17,7 +17,7 @@ interface AddSectionStakeProps {
   token1: Token
   stakeAmount: number
   balance: number
-  decimals: number | undefined
+  decimals: number
   lpTokenName: string | undefined
 }
 
@@ -26,7 +26,7 @@ export const RemoveSectionUnstake: FC<{
   token1: Token
   stakeAmount: number
   balance: number
-  decimals: number | undefined
+  decimals: number
   lpTokenName: string | undefined
 }> = ({ token0, token1, stakeAmount, balance, decimals, lpTokenName }) => {
   const isMounted = useIsMounted()

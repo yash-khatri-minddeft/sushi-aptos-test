@@ -94,7 +94,7 @@ const _Remove: FC = () => {
                   token1={token1}
                   stakeAmount={stakeAmount}
                   balance={farmBalance}
-                  decimals={coinInfo?.data?.decimals}
+                  decimals={coinInfo?.data?.decimals ?? 8}
                   lpTokenName={coinInfo?.data?.name}
                 />
               )}

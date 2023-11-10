@@ -5,7 +5,7 @@ import { Layout } from 'components/Layout'
 import { ContentBlock } from 'components/ContentBlock'
 import TradeInput from 'components/TradeInput'
 import { PlusIcon, ArrowLeftIcon } from '@heroicons/react/20/solid'
-import { formatNumber, getPoolPairs } from 'utils/utilFunctions'
+import { formatNumber, usePoolPairs } from 'utils/utilFunctions'
 import { usePoolActions, usePoolState } from 'app/pool/Pool/PoolProvider'
 import { Provider } from 'aptos'
 import { useWallet } from '@aptos-labs/wallet-adapter-react'
@@ -21,12 +21,11 @@ import { providerNetwork } from 'lib/constants'
 import { useSearchParams } from 'next/navigation'
 import getTokenFromAddress from 'utils/getTokenFromAddress'
 import { SettingsModule, SettingsOverlay } from '@sushiswap/ui/future/components/settings'
-import { useSwapState } from 'app/swap/trade/TradeProvider'
 
 export function Add() {
   // const router = useRouter()
   const { isLoadingAccount } = useAccount()
-  getPoolPairs()
+  usePoolPairs()
 
   return (
     <>

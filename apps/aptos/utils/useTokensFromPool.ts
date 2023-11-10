@@ -30,5 +30,7 @@ export function useTokensFromPools(row: Pool) {
       symbol: row?.data?.token_y_details?.symbol,
     }
   }
-  return { token0, token1 }
+  return useMemo(() => {
+    return { token0, token1 }
+  }, [row, token0, token1])
 }

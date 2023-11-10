@@ -114,7 +114,7 @@ type TokenPairReserve = {
   }
 }
 
-export async function getPoolPairs() {
+export async function usePoolPairs() {
   const CONTRACT_ADDRESS = process.env['NEXT_PUBLIC_SWAP_CONTRACT']
   const { token0, token1, isTransactionPending } = usePoolState()
   const { setPairs, setLoadingPrice, setPoolPairRatio } = usePoolActions()
