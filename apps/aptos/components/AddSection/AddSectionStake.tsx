@@ -18,6 +18,7 @@ interface AddSectionStakeProps {
   balance: number
   decimals: number | undefined
   lpTokenName: string | undefined
+  price: number
 }
 const MASTERCHEF_CONTRACT = process.env['MASTERCHEF_CONTRACT'] || process.env['NEXT_PUBLIC_MASTERCHEF_CONTRACT']
 const CONTRACT_ADDRESS = process.env['NEXT_PUBLIC_SWAP_CONTRACT'] || process.env['NEXT_PUBLIC_SWAP_CONTRACT']
@@ -29,7 +30,8 @@ export const AddSectionStake: FC<{
   balance: number
   decimals: number | undefined
   lpTokenName: string | undefined
-}> = ({ title, token0, token1, balance, decimals, lpTokenName }) => {
+  price: number
+}> = ({ title, token0, token1, balance, decimals, lpTokenName, price }) => {
   const isMounted = useIsMounted()
   return (
     <Transition
@@ -49,12 +51,21 @@ export const AddSectionStake: FC<{
         balance={balance}
         decimals={decimals}
         lpTokenName={lpTokenName}
+        price={price}
       />
     </Transition>
   )
 }
 
-const _AddSectionStake: FC<AddSectionStakeProps> = ({ title, token0, token1, balance, decimals, lpTokenName }) => {
+const _AddSectionStake: FC<AddSectionStakeProps> = ({
+  title,
+  token0,
+  token1,
+  balance,
+  decimals,
+  lpTokenName,
+  price,
+}) => {
   const [hover, setHover] = useState(false)
   const router = useParams()
   const tokenAddress = decodeURIComponent(router?.id)
@@ -118,6 +129,7 @@ const _AddSectionStake: FC<AddSectionStakeProps> = ({ title, token0, token1, bal
           token0={token0}
           token1={token1}
           balance={balance}
+          price={price}
         >
           {Number(value) > balance ? (
             <Button size="xl" variant="filled" disabled testId="stake-liquidity">

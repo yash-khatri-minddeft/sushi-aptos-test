@@ -84,7 +84,7 @@ export default function usePairs(currencies: [Token | undefined, Token | undefin
   const pairReserves = usePairReservesQueries(pairAddresses)
   return useMemo(() => {
     return tokens.map(([tokenA, tokenB]) => {
-      if (!tokenA || !tokenB || tokenA.address == tokenB.address) {
+      if (!tokenA || !tokenB || tokenA?.address == tokenB.address) {
         return [PairState.INVALID, null]
       }
       const pairReservesAddress = getReservesAddress(tokenA, tokenB)
@@ -112,7 +112,7 @@ export const getReservesAddress = (tokenA: Token, tokenB: Token) => {
 }
 
 export const sortsBefore = (tokenA: Token, tokenB: Token) => {
-  return tokenA.address.toLowerCase() < tokenB.address.toLowerCase()
+  return tokenA?.address?.toLowerCase() < tokenB?.address?.toLowerCase()
 }
 
 export const sortToken = (tokenA: Token, tokenB: Token) => {

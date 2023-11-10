@@ -174,21 +174,19 @@ const _Add: FC = () => {
   }, [account, connected, network, token0, token1, balance0, poolPairRatio])
   useEffect(() => {
     PoolInputBalance1(String(amount1))
+    PoolInputBalance0(String(amount0))
   }, [amount1, token1, balance1])
   useEffect(() => {
     setSlippageAmount0(amount0 ? Number(amount0) * 10 ** token0.decimals : 0)
     setSlippageAmount1(amount1 ? Number(amount1) * 10 ** token1.decimals : 0)
   }, [amount0, amount1])
-  // useEffect(() => {
-  //   onChangeToken1TypedAmount(String(amount1))
-  // }, [account, connected, network, amount1, balance1, poolPairRatio])
 
   const PoolInputBalance0 = (tradeVal: string) => {
     const regexPattern = /^[0-9]*(\.[0-9]*)?$/
     if (regexPattern.test(tradeVal)) {
       setAmount0(tradeVal)
     }
-    if (connected && balance0) {
+    if (connected && typeof balance0 === 'number') {
       const priceEst = balance0 / 10 ** token0.decimals < parseFloat(tradeVal)
       if (priceEst) {
         setError0('Exceeds Balance')
@@ -203,7 +201,7 @@ const _Add: FC = () => {
     if (regexPattern.test(tradeVal1)) {
       setAmount1(tradeVal1)
     }
-    if (connected && balance1) {
+    if (connected && typeof balance1 === 'number') {
       const priceEst = balance1 / 10 ** token1.decimals < parseFloat(tradeVal1)
       if (priceEst) {
         setError1('Exceeds Balance')

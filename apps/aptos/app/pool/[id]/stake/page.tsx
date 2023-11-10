@@ -13,6 +13,7 @@ import { useAccount } from 'utils/useAccount'
 import { isFarm, useFarms } from 'utils/useFarms'
 import { usePool } from 'utils/usePool'
 import { Pool } from 'utils/usePools'
+import UseStablePrice from 'utils/useStablePrice'
 import { useTokenBalance } from 'utils/useTokenBalance'
 import { useTokensFromPools } from 'utils/useTokensFromPool'
 import { useTotalSupply } from 'utils/useTotalSupply'
@@ -44,6 +45,7 @@ const _Add = () => {
   }, [pool])
 
   const { token0, token1 } = useTokensFromPools(pool as Pool)
+  console.log(token0, token1)
 
   const { data: coinInfo } = useTotalSupply(tokenAddress)
 
@@ -74,7 +76,12 @@ const _Add = () => {
       return 0
     }
   }, [stakes, pIdIndex, coinInfo])
-
+  const token0Price = UseStablePrice(token0)
+  const token1Price = UseStablePrice(token1)
+  const token0RemovePoolPrice = token0Price ? (token0Price * Number(reserve0)) / 10 ** token0.decimals : 0
+  const token1RemovePoolPrice = token1Price ? (token1Price * Number(reserve1)) / 10 ** token1.decimals : 0
+  const LpPrice = coinInfo ? (Number(reserve0) + Number(reserve1)) / Number(totalSupply) : 0
+  console.log(token0RemovePoolPrice)
   // const farmBalance = coinInfo ? ((stakeAmount / 10 ** coinInfo?.data?.decimals) as number) : 0
 
   const [farmUnderlying0, farmUnderlying1] = useUnderlyingTokenBalanceFromPool({
@@ -84,6 +91,7 @@ const _Add = () => {
     totalSupply: Number(totalSupply),
     decimals: coinInfo?.data?.decimals,
   })
+
   useEffect(() => {
     requiredNetworkAlert(network, disconnect)
   }, [network])
@@ -102,6 +110,7 @@ const _Add = () => {
               balance={balance}
               decimals={coinInfo?.data?.decimals}
               lpTokenName={coinInfo?.data?.name}
+              price={LpPrice}
             />
             <Container className="flex justify-center">
               <Link.External

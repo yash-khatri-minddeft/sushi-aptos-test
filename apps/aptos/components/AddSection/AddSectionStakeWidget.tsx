@@ -1,6 +1,7 @@
 import { Disclosure, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/24/outline'
-import { Currency, DEFAULT_INPUT_UNSTYLED, Input, Typography, Widget, classNames } from '@sushiswap/ui'
+import { formatUSD } from '@sushiswap/format'
+import { DEFAULT_INPUT_UNSTYLED, Input, Typography, Widget, classNames } from '@sushiswap/ui'
 import { Button } from '@sushiswap/ui/future/components/button'
 import { Icon } from 'components/Icon'
 import { IconList } from 'components/IconList'
@@ -15,6 +16,7 @@ interface AddSectionStakeWidgetProps {
   token0: Token
   token1: Token
   balance: number
+  price: number
 }
 
 export const AddSectionStakeWidget: FC<AddSectionStakeWidgetProps> = ({
@@ -25,7 +27,10 @@ export const AddSectionStakeWidget: FC<AddSectionStakeWidgetProps> = ({
   token0,
   token1,
   balance,
+  price,
 }) => {
+  const priceUsd = price * Number(value)
+  console.log(priceUsd, balance)
   return useMemo(
     () => (
       <Widget id="stakeLiquidity" maxWidth={400} className="bg-white dark:bg-slate-800">
@@ -110,7 +115,7 @@ export const AddSectionStakeWidget: FC<AddSectionStakeWidgetProps> = ({
                             weight={500}
                             className="text-gray-700 dark:text-slate-300 hover:text-slate-20"
                           >
-                            {`$0.00`}
+                            {formatUSD(priceUsd)}
                           </Typography>
                         </Transition>
                         <Transition
