@@ -4,6 +4,7 @@ import { PoolNameCell } from '../SharedCells/PoolNameCell'
 import { Skeleton } from '@sushiswap/ui/future/components/skeleton'
 import { PoolReserveCell } from '../SharedCells/PoolReserveCell'
 import { PoolTVLCell } from '../SharedCells/PoolTVLCell'
+import { PoolAPRCell } from '../SharedCells/PoolAPRCell'
 export const ICON_SIZE = 26
 export const PAGE_SIZE = 20
 
@@ -46,6 +47,21 @@ export const TVL_COLUMN: ColumnDef<Pool, unknown> = {
   id: 'TVL',
   header: 'TVL',
   cell: (props) => <PoolTVLCell row={props.row.original} />,
+  meta: {
+    skeleton: (
+      <div className="flex items-center w-full gap-2">
+        <div className="flex flex-col w-full">
+          <Skeleton.Text fontSize="text-lg" />
+        </div>
+      </div>
+    ),
+  },
+}
+
+export const APR_COLUMN: ColumnDef<Pool, unknown> = {
+  id: 'APR',
+  header: 'APR',
+  cell: (props) => <PoolAPRCell row={props.row.original} />,
   meta: {
     skeleton: (
       <div className="flex items-center w-full gap-2">

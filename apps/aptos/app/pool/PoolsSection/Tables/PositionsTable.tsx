@@ -2,23 +2,20 @@ import { useWallet } from '@aptos-labs/wallet-adapter-react'
 import Container from '@sushiswap/ui/future/components/Container'
 import React, { useCallback, useMemo } from 'react'
 import { useUserPositions } from 'utils/useUserPositions'
-import { NAME_COLUMN } from './Cells/columns'
+import { APR_COLUMN, NAME_COLUMN, RESERVE_COLUMN, TVL_COLUMN } from './Cells/columns'
 import { GenericTable } from '@sushiswap/ui/future/components/table/GenericTable'
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { Pool } from 'utils/usePools'
 import { useDebounce } from '@sushiswap/hooks'
 
-const columns = [NAME_COLUMN] as any
+const columns = [NAME_COLUMN, TVL_COLUMN, APR_COLUMN, RESERVE_COLUMN] as any
 interface Props {
   query: string
 }
 
 export const PositionsTable = ({ query }: Props) => {
   const { account } = useWallet()
-  const { data: userPositions, isLoading } = useUserPositions(
-    account?.address as string,
-    true
-  )
+  const { data: userPositions, isLoading } = useUserPositions(account?.address as string, true)
   const data = useMemo(() => userPositions?.flat() || [], [userPositions])
 
   const debouncedQuery = useDebounce(query.trimStart().toLowerCase(), 400)

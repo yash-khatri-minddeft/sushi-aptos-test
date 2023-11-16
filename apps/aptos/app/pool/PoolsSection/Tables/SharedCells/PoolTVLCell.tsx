@@ -4,6 +4,7 @@ import { Pool } from 'utils/usePools'
 import { useTokensFromPools } from 'utils/useTokensFromPool'
 import UseStablePrice from 'utils/useStablePrice'
 import { formatUSD } from '@sushiswap/format'
+import { formatNumber } from 'utils/utilFunctions'
 
 export const PoolTVLCell: FC<Row<Pool>> = ({ row }) => {
   const { token0, token1 } = useTokensFromPools(row)
@@ -14,8 +15,10 @@ export const PoolTVLCell: FC<Row<Pool>> = ({ row }) => {
   }, [row])
   const token0Price = UseStablePrice(token0) ?? 0
   const token1Price = UseStablePrice(token1) ?? 0
-  const poolTvl = token0Price + token0Price
-
+  // const poolTvl = token0Price * Number(reserve0) + token1Price * Number(reserve1)
+  const poolTvl =
+    token0Price * Number(formatNumber(Number(reserve0), token0.decimals)) +
+    token1Price * Number(formatNumber(Number(reserve1), token1.decimals))
   return (
     <div className="flex items-center gap-1">
       <div className="flex flex-col gap-0.5">

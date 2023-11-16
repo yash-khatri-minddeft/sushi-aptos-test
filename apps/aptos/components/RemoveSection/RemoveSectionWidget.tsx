@@ -2,14 +2,18 @@ import { useWallet } from '@aptos-labs/wallet-adapter-react'
 import { Disclosure, Transition } from '@headlessui/react'
 import { Cog8ToothIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/24/solid'
+import { formatUSD } from '@sushiswap/format'
 import { useIsMounted } from '@sushiswap/hooks'
 import { AppearOnMount, DEFAULT_INPUT_UNSTYLED, Typography, Widget, classNames } from '@sushiswap/ui'
 import { Button } from '@sushiswap/ui/future/components/button'
 import { Input } from '@sushiswap/ui/future/components/input'
 import { SettingsModule, SettingsOverlay } from '@sushiswap/ui/future/components/settings'
 import { Icon } from 'components/Icon'
-import { FC, Fragment, ReactNode, useState } from 'react'
+import { useParams } from 'next/navigation'
+import { FC, Fragment, ReactNode, useMemo, useState } from 'react'
 import { Token } from 'utils/tokenType'
+import { usePool } from 'utils/usePool'
+import UseStablePrice from 'utils/useStablePrice'
 
 interface RemoveSectionWidgetProps {
   isFarm: boolean
@@ -34,6 +38,16 @@ export const RemoveSectionWidget: FC<RemoveSectionWidgetProps> = ({
   token0MinMinimum,
   token1MinMinimum,
 }) => {
+  const router = useParams()
+  const tokenAddress = decodeURIComponent(router?.id)
+  const { data: pool } = usePool(tokenAddress)
+  const [reserve0, reserve1] = useMemo(() => {
+    return [pool?.data?.balance_x?.value, pool?.data?.balance_y?.value]
+  }, [pool])
+  const token0Price = UseStablePrice(token0)
+  const token1Price = UseStablePrice(token1)
+  const token0RemoveLiquidityPrice = token0Price ? (token0Price * Number(reserve0)) / 10 ** token0.decimals : 0
+  const token1RemoveLiquidityPrice = token1Price ? (token1Price * Number(reserve1)) / 10 ** token1.decimals : 0
   const isMounted = useIsMounted()
   const [hover, setHover] = useState(false)
   const { account } = useWallet()
@@ -176,7 +190,7 @@ export const RemoveSectionWidget: FC<RemoveSectionWidgetProps> = ({
                       <div className="grid items-center justify-between grid-cols-3 pb-2">
                         <AppearOnMount show={true}>
                           <Typography variant="sm" weight={500} className="text-gray-900 dark:text-slate-300">
-                            {`$0.00`}
+                            {formatUSD((token0RemoveLiquidityPrice + token1RemoveLiquidityPrice) * (+percentage / 100))}
                           </Typography>
                         </AppearOnMount>
                         <AppearOnMount className="flex justify-end col-span-2" show={true}>
@@ -219,7 +233,7 @@ export const RemoveSectionWidget: FC<RemoveSectionWidgetProps> = ({
                               </span>
                             </Typography>
                             <Typography variant="xs" className="text-gray-600 dark:text-slate-400">
-                              {`$0.00`}
+                              {formatUSD(token0RemoveLiquidityPrice * (+percentage / 100))}
                             </Typography>
                           </div>
                           <div className="flex items-center justify-between">
@@ -235,7 +249,7 @@ export const RemoveSectionWidget: FC<RemoveSectionWidgetProps> = ({
                               </span>
                             </Typography>
                             <Typography variant="xs" className="text-gray-600 dark:text-slate-400">
-                              {`$0.00`}
+                              {formatUSD(token1RemoveLiquidityPrice * (+percentage / 100))}
                             </Typography>
                           </div>
                         </div>
