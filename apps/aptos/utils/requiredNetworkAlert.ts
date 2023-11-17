@@ -4,8 +4,8 @@ export default function requiredNetworkAlert(network: NetworkInfo | null, discon
   if (network?.name?.toLowerCase() === undefined) {
     disconnect()
   }
-  if (network?.name?.toLowerCase() === 'mainnet' || network?.name?.toLowerCase() === 'devnet') {
+  if (network?.name?.toLowerCase() === 'testnet' || network?.name?.toLowerCase() === 'devnet') {
     disconnect()
-    alert('Please switch network to testnet')
+    alert('Please switch network to mainnet')
   }
 }

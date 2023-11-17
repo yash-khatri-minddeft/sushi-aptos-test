@@ -2,13 +2,14 @@ import { useWallet } from '@aptos-labs/wallet-adapter-react'
 import Container from '@sushiswap/ui/future/components/Container'
 import React, { useCallback, useMemo } from 'react'
 import { useUserPositions } from 'utils/useUserPositions'
-import { APR_COLUMN, NAME_COLUMN, RESERVE_COLUMN, TVL_COLUMN } from './Cells/columns'
+import { NAME_COLUMN } from './Cells/columns'
 import { GenericTable } from '@sushiswap/ui/future/components/table/GenericTable'
 import { getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { Pool } from 'utils/usePools'
 import { useDebounce } from '@sushiswap/hooks'
+import { MYPOSITION_APR_COLUMN, MYPOSITION_RESERVE_COLUMN, MYPOSITION_TVL_COLUMN } from './Cells/columnsMyPositions'
 
-const columns = [NAME_COLUMN, TVL_COLUMN, APR_COLUMN, RESERVE_COLUMN] as any
+const columns = [NAME_COLUMN, MYPOSITION_TVL_COLUMN, MYPOSITION_APR_COLUMN, MYPOSITION_RESERVE_COLUMN] as any
 interface Props {
   query: string
 }
